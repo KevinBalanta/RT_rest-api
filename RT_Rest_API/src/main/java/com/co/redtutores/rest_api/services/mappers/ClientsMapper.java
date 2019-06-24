@@ -11,7 +11,7 @@ public class ClientsMapper implements IClientsMapper {
 	@Override
 	public Client clientDTOtoClient(ClientsDTO dto) {
 		Client c = new Client();
-		c.setClientCode(dto.getClientCode());
+		c.setClientId(dto.getClientCode());
 		c.setClientName(dto.getClientName());
 		return c;
 	}
@@ -19,7 +19,7 @@ public class ClientsMapper implements IClientsMapper {
 	@Override
 	public ClientsDTO clientToClientDTO(Client client) {
 		ClientsDTO dto = new ClientsDTO();
-		dto.setClientCode(client.getClientCode());
+		dto.setClientCode(client.getClientId());
 		dto.setClientName(client.getClientName());
 		return dto;
 	}

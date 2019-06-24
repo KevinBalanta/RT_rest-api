@@ -26,7 +26,7 @@ public class ClientsDAO implements IClientsDAO {
 	@Override
 	public void createClient(Client c) throws Exception {
 		try {
-			log.info("[Persistence] Client Code: " + c.getClientCode());
+			log.info("[Persistence] Client Code: " + c.getClientId());
 			log.info("[Persistence] Client Name: " + c.getClientName());
 			entityManager.persist(c);
 		} catch (Exception e) {
