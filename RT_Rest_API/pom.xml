@@ -37,7 +37,7 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.9</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -140,6 +140,12 @@
 			<version>2.2.14</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.reactivestreams/reactive-streams -->
+		<dependency>
+			<groupId>org.reactivestreams</groupId>
+			<artifactId>reactive-streams</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 
 	</dependencies>
 

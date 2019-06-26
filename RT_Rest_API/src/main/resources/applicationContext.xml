@@ -9,7 +9,7 @@
 		
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/RT_rest-api_database" />
+		<property name="url" value="jdbc:postgresql://postgresrt.cde5cg5zsub9.us-east-1.rds.amazonaws.com:5432/RT_database" />
 		<property name="username" value="postgres" />
 		<property name="password" value="postgres" />
 	</bean>

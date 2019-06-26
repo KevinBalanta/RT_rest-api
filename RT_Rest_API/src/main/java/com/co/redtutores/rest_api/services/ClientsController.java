@@ -41,7 +41,7 @@ public class ClientsController {
 	public void createClient(@RequestBody ClientsDTO c) {
 		try {
 			Client newClient = clientsMapper.clientDTOtoClient(c);
-			log.info(newClient.getClientCode());
+			log.info(newClient.getClientId());
 			log.info(newClient.getClientName());
 			clientsDelegate.createClient(newClient);
 		} catch (Exception e) {
