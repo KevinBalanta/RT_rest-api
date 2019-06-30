@@ -1,5 +1,7 @@
 package com.co.redtutores.rest_api.services.mappers;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Component;
 
 import com.co.redtutores.rest_api.commons.dto.ClientsDTO;
@@ -13,6 +15,12 @@ public class ClientsMapper implements IClientsMapper {
 		Client c = new Client();
 		c.setClientId(dto.getClientCode());
 		c.setClientName(dto.getClientName());
+		c.setClientLastname(dto.getLastName());
+		c.setClientBirth(dto.getBirthday());
+		c.setClientPhone(dto.getPhoneNumber());
+		c.setClientSemester(dto.getSemesterNumber());
+		
+		
 		return c;
 	}
 
@@ -21,6 +29,11 @@ public class ClientsMapper implements IClientsMapper {
 		ClientsDTO dto = new ClientsDTO();
 		dto.setClientCode(client.getClientId());
 		dto.setClientName(client.getClientName());
+		dto.setLastName(client.getClientLastname());
+		dto.setBirthday(client.getClientBirth());
+		dto.setPhoneNumber(client.getClientPhone());
+		dto.setPhoneNumber(client.getClientPhone());
+		
 		return dto;
 	}
 

@@ -3,10 +3,11 @@
  */
 package com.co.redtutores.rest_api.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.co.redtutores.rest_api.commons.dto.ClientsDTO;
+import com.co.redtutores.rest_api.commons.entities.Account;
+import com.co.redtutores.rest_api.commons.entities.City;
 import com.co.redtutores.rest_api.commons.entities.Client;
+import com.co.redtutores.rest_api.commons.entities.Institution;
+import com.co.redtutores.rest_api.delegate.AccountDelegate;
 import com.co.redtutores.rest_api.delegate.ClientsDelegate;
+import com.co.redtutores.rest_api.persistence.CityDAO;
+import com.co.redtutores.rest_api.persistence.ICityDAO;
+import com.co.redtutores.rest_api.persistence.IInstitutionDAO;
 import com.co.redtutores.rest_api.services.mappers.IClientsMapper;
 
 /**
@@ -32,21 +40,50 @@ public class ClientsController {
 	
 	@Autowired
 	private ClientsDelegate clientsDelegate;
+	@Autowired
+	private AccountDelegate accountDelegate;
+	@Autowired
+	private ICityDAO cityDAO;
+	@Autowired
+	private IInstitutionDAO instDAO;
 	
 	@Autowired
 	private IClientsMapper clientsMapper;
 	
 	//@PostMapping(value = "/createClient", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@RequestMapping(value = "/createClient", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public void createClient(@RequestBody ClientsDTO c) {
+	public ResponseEntity<Client> createClient(@RequestBody ClientsDTO c) {
+		ResponseEntity<Client> resp = null;
+		Client newClient = null;
 		try {
-			Client newClient = clientsMapper.clientDTOtoClient(c);
-			log.info(newClient.getClientId());
-			log.info(newClient.getClientName());
-			clientsDelegate.createClient(newClient);
+			newClient = clientsMapper.clientDTOtoClient(c);
+			
+			Account account = new Account();
+			account.setAccountUsername(c.getUsername());
+			account.setAccountPassword(c.getPassword());
+			
+			if(accountDelegate.findByUserName(account.getAccountUsername()) != null) {
+				throw new Exception("el username ya existe : "+ account.getAccountUsername());
+			}else {
+				
+				log.info(newClient.getClientName());
+				log.info(newClient.getClientId());
+				accountDelegate.createAccount(account);
+				newClient.setAccount(account);
+				City city = cityDAO.findByNameAndStateName(c.getCity(), c.getState());
+				newClient.setCity(city);
+				Institution inst = instDAO.findByName(c.getInstitution());
+				newClient.setInstitution(inst);
+				clientsDelegate.createClient(newClient);
+				
+			}
+			
+			resp = new ResponseEntity<Client>(newClient, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error(e.getMessage());
+			resp = new ResponseEntity<Client>(newClient, HttpStatus.BAD_REQUEST);
 		}
+		return resp;
 	}
 	
 	//@GetMapping(value = "/findClient/{clientCode}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

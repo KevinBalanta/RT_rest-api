@@ -31,6 +31,7 @@ public class ClientsDAO implements IClientsDAO {
 			entityManager.persist(c);
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 			throw new Exception("An error ocurred at the persistence layer: " + e.getMessage());
 		}
 
